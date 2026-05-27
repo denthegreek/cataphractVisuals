@@ -10,10 +10,11 @@ function Collections() {
   const [selectedCollection, setSelectedCollection] = useState(null);
   const [activeFrameIndex, setActiveFrameIndex] = useState(0);
   const [visibleItems, setVisibleItems] = useState(() => new Set());
-  const pageImages = collections.flatMap((collection) =>
-    collection.frames.slice(0, 3).map((frame) => frame.image),
-  );
-  const isLoadingImages = useImagePreloader(pageImages);
+  const pageImages = collections
+    .slice(0, 2)
+    .map((collection) => collection.frames[0]?.image)
+    .filter(Boolean);
+  const isLoadingImages = useImagePreloader(pageImages, { maxWait: 1400 });
 
   useEffect(() => {
     if (!pageRef.current) {
@@ -127,9 +128,16 @@ function Collections() {
             style={{ "--collections-delay": `${Math.min(index, 5) * 54}ms` }}
           >
             <div className="collection-preview-strip">
-              {collection.frames.slice(0, 3).map((frame) => (
+              {collection.frames.slice(0, 3).map((frame, frameIndex) => (
                 <div key={frame.id}>
-                  <img src={frame.image} alt="" aria-hidden="true" loading="lazy" />
+                  <img
+                    src={frame.image}
+                    alt=""
+                    aria-hidden="true"
+                    loading={index < 2 && frameIndex === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                    fetchPriority={index < 2 && frameIndex === 0 ? "high" : "auto"}
+                  />
                 </div>
               ))}
             </div>
