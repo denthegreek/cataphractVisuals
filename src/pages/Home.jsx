@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import sample2 from "../assets/sample2.JPG";
-import PageLoader from "../components/PageLoader";
 import { getPhotoByPath, getPhotoPath, photoCategories } from "../data/photos";
 import "./Home.css";
 
@@ -20,12 +19,23 @@ const heroLogo = "/logo-shadow.png";
 const featuredPhotoData = getPhotoByPath(featuredPhoto);
 const ypapantiPhotoData = getPhotoByPath(ypapantiPhoto);
 
-function HomeImage({ src, alt, className = "", priority = false, decorative = false }) {
+function HomeImage({
+  src,
+  alt,
+  className = "",
+  priority = false,
+  decorative = false,
+  loader = true,
+}) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <span className={`home-image-frame ${isLoaded ? "is-loaded" : ""} ${className}`}>
-      <span className="home-image-loader" aria-hidden="true" />
+    <span
+      className={`home-image-frame ${loader ? "" : "home-image-frame-plain"} ${
+        isLoaded ? "is-loaded" : ""
+      } ${className}`}
+    >
+      {loader && <span className="home-image-loader" aria-hidden="true" />}
       <img
         src={src}
         alt={alt}
@@ -41,7 +51,6 @@ function HomeImage({ src, alt, className = "", priority = false, decorative = fa
 }
 
 function Home() {
-  const [isHeroLogoLoaded, setIsHeroLogoLoaded] = useState(false);
   const [isHeroBackgroundLoaded, setIsHeroBackgroundLoaded] = useState(false);
   const featuredThemes = useMemo(
     () =>
@@ -53,8 +62,6 @@ function Home() {
   );
   return (
     <>
-      <PageLoader isLoading={!isHeroLogoLoaded} label="Loading Mark" />
-
       <section className={`hero-section ${isHeroBackgroundLoaded ? "is-bg-loaded" : ""}`}>
         <img
           className="hero-background-preload"
@@ -79,15 +86,12 @@ function Home() {
 
               <div className="hero-title-row">
                 <h1 className="hero-logo-title">
-                  <img
+                  <HomeImage
                     src={heroLogo}
                     alt="Cataphract Visuals logo"
                     className="hero-title-logo"
-                    loading="eager"
-                    decoding="async"
-                    fetchPriority="high"
-                    onLoad={() => setIsHeroLogoLoaded(true)}
-                    onError={() => setIsHeroLogoLoaded(true)}
+                    priority
+                    loader={false}
                   />
                 </h1>
               </div>

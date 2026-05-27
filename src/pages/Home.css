@@ -115,8 +115,14 @@ h1 {
   height: auto;
   display: block;
   margin: none;
-  object-fit: cover;
   transform: scale(1.5);
+}
+
+.hero-title-logo.home-image-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
 }
 
 h2 {
@@ -261,6 +267,10 @@ h3 {
   display: block;
   overflow: hidden;
   background: #15130f;
+}
+
+.home-image-frame-plain {
+  background: transparent;
 }
 
 .home-image-frame img {
