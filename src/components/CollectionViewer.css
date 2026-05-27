@@ -1,0 +1,465 @@
+.collection-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 28px;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(12px);
+  animation: collectionBackdropIn 220ms ease both;
+}
+
+.collection-modal-backdrop.is-closing {
+  animation: collectionBackdropOut 220ms ease both;
+}
+
+.collection-modal {
+  position: relative;
+  width: min(1180px, 100%);
+  max-height: min(780px, calc(100vh - 56px));
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+  gap: 0;
+  border: 1px solid rgba(243, 238, 228, 0.16);
+  background: #0b0a09;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.58);
+  overflow: hidden;
+  transform-origin: center;
+  animation: collectionModalIn 320ms cubic-bezier(0.2, 0.82, 0.22, 1) both;
+}
+
+.collection-modal-backdrop.is-closing .collection-modal {
+  animation: collectionModalOut 220ms ease both;
+}
+
+.collection-modal-desktop-guide {
+  width: min(1180px, 100%);
+  margin: 0;
+  color: rgba(243, 238, 228, 0.48);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-align: center;
+  animation: collectionGuideIn 300ms ease both;
+}
+
+.collection-modal-close {
+  position: absolute;
+  z-index: 2;
+  top: 16px;
+  right: 16px;
+  min-height: 36px;
+  padding: 0 16px;
+  border: 1px solid rgba(243, 238, 228, 0.18);
+  background: rgba(8, 8, 7, 0.72);
+  color: rgba(243, 238, 228, 0.78);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.68rem;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.collection-modal-close:hover,
+.collection-modal-close:focus-visible {
+  border-color: rgba(215, 180, 106, 0.62);
+  background:
+    linear-gradient(135deg, rgba(215, 180, 106, 0.16), rgba(243, 238, 228, 0.04)),
+    rgba(8, 8, 7, 0.86);
+  color: #f3eee4;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.32);
+  transform: translateY(-1px);
+}
+
+.collection-modal-close:focus-visible {
+  outline: 1px solid rgba(243, 238, 228, 0.5);
+  outline-offset: 3px;
+}
+
+.collection-modal-image {
+  min-height: 0;
+  display: grid;
+  align-items: center;
+  justify-items: start;
+  background: #050504;
+}
+
+.collection-modal-image img {
+  max-width: 100%;
+  max-height: min(780px, calc(100vh - 56px));
+  display: block;
+  object-fit: contain;
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  transition:
+    opacity 240ms ease,
+    transform 300ms cubic-bezier(0.2, 0.72, 0.24, 1);
+}
+
+.collection-modal-image.is-leaving img {
+  opacity: 0;
+  transform: translateX(-10px) scale(0.992);
+}
+
+.collection-modal-image.is-entering img {
+  animation: collectionFrameImageIn 260ms cubic-bezier(0.2, 0.72, 0.24, 1) both;
+}
+
+.collection-modal-content {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 42px 34px 30px;
+  overflow-y: auto;
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 220ms ease,
+    transform 280ms cubic-bezier(0.2, 0.72, 0.24, 1);
+}
+
+.collection-modal-content.is-leaving {
+  opacity: 0;
+  transform: translateX(8px);
+}
+
+.collection-modal-content.is-entering {
+  animation: collectionFrameCopyIn 260ms cubic-bezier(0.2, 0.72, 0.24, 1) both;
+}
+
+.collection-modal-details {
+  display: contents;
+}
+
+.collection-modal-content h2,
+.collection-frame-copy h3 {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-weight: 400;
+}
+
+.collection-modal-content h2 {
+  font-size: 2.3rem;
+}
+
+.collection-modal-count {
+  color: rgba(243, 238, 228, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+}
+
+.collection-modal-hint {
+  margin: -10px 0 2px;
+  color: rgba(243, 238, 228, 0.38);
+  font-size: 0.76rem;
+  line-height: 1.6;
+}
+
+.collection-modal-hint {
+  display: none;
+}
+
+.collection-modal-hint-mobile {
+  display: none;
+}
+
+.collection-frame-copy {
+  padding-top: 10px;
+  border-top: 1px solid rgba(243, 238, 228, 0.1);
+}
+
+.collection-frame-copy h3 {
+  font-size: 1.55rem;
+}
+
+.collection-frame-poem {
+  margin: 22px 0 0;
+  color: rgba(243, 238, 228, 0.74);
+  font-family: Georgia, serif;
+  font-size: 1.04rem;
+  line-height: 1.9;
+}
+
+.collection-frame-poem-empty {
+  color: rgba(243, 238, 228, 0.42);
+  font-style: italic;
+}
+
+.collection-frame-meta {
+  display: grid;
+  gap: 8px;
+  margin-top: auto;
+  color: rgba(243, 238, 228, 0.52);
+  font-size: 0.86rem;
+}
+
+.collection-modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.collection-modal-actions button {
+  position: relative;
+  min-height: 42px;
+  border: 1px solid rgba(215, 180, 106, 0.44);
+  background: transparent;
+  color: rgba(243, 238, 228, 0.78);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+  overflow: hidden;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.collection-modal-actions button:hover:not(:disabled),
+.collection-modal-actions button:focus-visible:not(:disabled) {
+  border-color: rgba(215, 180, 106, 0.74);
+  background:
+    linear-gradient(135deg, rgba(215, 180, 106, 0.16), rgba(243, 238, 228, 0.035)),
+    rgba(215, 180, 106, 0.06);
+  color: #f3eee4;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
+  transform: translateY(-2px);
+}
+
+.collection-modal-actions button:focus-visible {
+  outline: 1px solid rgba(243, 238, 228, 0.48);
+  outline-offset: 3px;
+}
+
+.collection-modal-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.34;
+  transform: none;
+}
+
+@keyframes collectionBackdropIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes collectionModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.975);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes collectionBackdropOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes collectionModalOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+}
+
+@keyframes collectionFrameImageIn {
+  from {
+    opacity: 0;
+    transform: translateX(12px) scale(0.992);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes collectionFrameCopyIn {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes collectionGuideIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collection-modal-backdrop,
+  .collection-modal,
+  .collection-modal-image img,
+  .collection-modal-content,
+  .collection-modal-desktop-guide {
+    animation: none;
+    transition: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .collection-modal-backdrop {
+    padding: 10px;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+    overflow: hidden;
+  }
+
+  .collection-modal-desktop-guide {
+    display: none;
+  }
+
+  .collection-modal {
+    width: 100%;
+    height: calc(100svh - 20px);
+    max-height: calc(100svh - 20px);
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    border-color: rgba(243, 238, 228, 0.14);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .collection-modal-close {
+    top: 14px;
+    right: 14px;
+    min-height: 34px;
+    padding: 0 14px;
+    background: rgba(8, 8, 7, 0.78);
+  }
+
+  .collection-modal-image {
+    min-height: auto;
+    justify-items: center;
+    padding: 64px 14px 18px;
+    background: #050504;
+  }
+
+  .collection-modal-image img {
+    width: auto;
+    max-width: 100%;
+    max-height: 52svh;
+  }
+
+  .collection-modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-height: 0;
+    padding: 0;
+    overflow: visible;
+    border-top: 1px solid rgba(243, 238, 228, 0.1);
+  }
+
+  .collection-modal-details {
+    order: 2;
+    display: block;
+    min-height: auto;
+    padding: 22px 18px 20px;
+    overflow: visible;
+  }
+
+  .collection-modal-heading {
+    padding-bottom: 14px;
+  }
+
+  .collection-modal-content h2 {
+    font-size: clamp(1.65rem, 10vw, 2.35rem);
+    line-height: 1.04;
+  }
+
+  .collection-modal-count {
+    font-size: 0.66rem;
+  }
+
+  .collection-modal-hint {
+    margin: -2px 0 6px;
+    font-size: 0.72rem;
+  }
+
+  .collection-frame-copy {
+    padding-top: 16px;
+  }
+
+  .collection-frame-copy h3 {
+    font-size: 1.35rem;
+    line-height: 1.18;
+  }
+
+  .collection-frame-poem {
+    margin-top: 16px;
+    font-size: 0.98rem;
+    line-height: 1.65;
+  }
+
+  .collection-frame-meta {
+    align-content: start;
+    margin-top: 18px;
+    font-size: 0.78rem;
+  }
+
+  .collection-modal-actions {
+    order: 1;
+    flex: 0 0 auto;
+    padding: 12px 18px 14px;
+    border-top: 1px solid rgba(243, 238, 228, 0.1);
+    border-bottom: 1px solid rgba(243, 238, 228, 0.1);
+    background: #0b0a09;
+  }
+
+  .collection-modal-actions button {
+    min-height: 40px;
+    font-size: 0.66rem;
+  }
+
+  .collection-modal-hint,
+  .collection-modal-hint-mobile {
+    display: inline;
+  }
+}

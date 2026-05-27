@@ -1,0 +1,46 @@
+.rights-footer {
+  padding: 30px 24px 36px;
+  border-top: 1px solid rgba(243, 238, 228, 0.1);
+  background:
+    linear-gradient(180deg, rgba(215, 180, 106, 0.035), transparent),
+    #080807;
+  color: rgba(243, 238, 228, 0.48);
+}
+
+.rights-footer p {
+  width: min(720px, 100%);
+  margin: 0 auto;
+  font-size: 0.72rem;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.rights-footer a {
+  width: fit-content;
+  display: block;
+  margin: 14px auto 0;
+  color: rgba(215, 180, 106, 0.74);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.66rem;
+  font-weight: 700;
+  transition:
+    color 220ms ease,
+    opacity 220ms ease;
+}
+
+.rights-footer a:hover,
+.rights-footer a:focus-visible {
+  color: #d7b46a;
+  opacity: 1;
+}
+
+@media (max-width: 680px) {
+  .rights-footer {
+    padding: 24px 18px 88px;
+  }
+
+  .rights-footer p {
+    font-size: 0.68rem;
+  }
+}

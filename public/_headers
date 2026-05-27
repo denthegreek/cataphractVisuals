@@ -1,0 +1,20 @@
+# Long-lived immutable caching is safe for static photo assets because updated images should receive new filenames.
+/photos/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Equipment images are also content-addressed by filename from the app's point of view.
+/equipment/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Brand assets are stable and reused across pages, so they benefit from the same browser cache policy.
+/logo.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/cataphract-icon.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/favicon.svg
+  Cache-Control: public, max-age=31536000, immutable
+
+/icons.svg
+  Cache-Control: public, max-age=31536000, immutable
