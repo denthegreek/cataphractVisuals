@@ -1,9 +1,8 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import sample2 from "../assets/sample2.JPG";
 import PageLoader from "../components/PageLoader";
 import { getPhotoByPath, getPhotoPath, photoCategories } from "../data/photos";
-import useImagePreloader from "../hooks/useImagePreloader";
 import "./Home.css";
 
 const getRandomPhoto = (theme) => {
@@ -21,7 +20,29 @@ const heroLogo = "/logo-shadow.png";
 const featuredPhotoData = getPhotoByPath(featuredPhoto);
 const ypapantiPhotoData = getPhotoByPath(ypapantiPhoto);
 
+function HomeImage({ src, alt, className = "", priority = false, decorative = false }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  return (
+    <span className={`home-image-frame ${isLoaded ? "is-loaded" : ""} ${className}`}>
+      <span className="home-image-loader" aria-hidden="true" />
+      <img
+        src={src}
+        alt={alt}
+        aria-hidden={decorative ? "true" : undefined}
+        loading={priority ? "eager" : "lazy"}
+        decoding="async"
+        fetchPriority={priority ? "high" : "auto"}
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setIsLoaded(true)}
+      />
+    </span>
+  );
+}
+
 function Home() {
+  const [isHeroLogoLoaded, setIsHeroLogoLoaded] = useState(false);
+  const [isHeroBackgroundLoaded, setIsHeroBackgroundLoaded] = useState(false);
   const featuredThemes = useMemo(
     () =>
       photoCategories.map((theme) => ({
@@ -30,26 +51,25 @@ function Home() {
       })),
     [],
   );
-  const pageImages = useMemo(
-    () => [
-      sample2,
-      heroLogo,
-      featuredPhoto,
-      ypapantiPhoto,
-      ...featuredThemes.map((theme) => theme.photo).filter(Boolean),
-    ],
-    [featuredThemes],
-  );
-  const isLoadingImages = useImagePreloader(pageImages);
-
   return (
     <>
-      <PageLoader isLoading={isLoadingImages} />
+      <PageLoader isLoading={!isHeroLogoLoaded} label="Loading Mark" />
 
-      <section
-        className="hero-section"
-        style={{ backgroundImage: `url(${sample2})` }}
-      >
+      <section className={`hero-section ${isHeroBackgroundLoaded ? "is-bg-loaded" : ""}`}>
+        <img
+          className="hero-background-preload"
+          src={sample2}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+          onLoad={() => setIsHeroBackgroundLoaded(true)}
+          onError={() => setIsHeroBackgroundLoaded(true)}
+        />
+        <div
+          className="hero-background"
+          style={{ backgroundImage: `url(${sample2})` }}
+          aria-hidden="true"
+        />
         <div className="hero-overlay" />
 
         <div className="hero-content">
@@ -63,6 +83,11 @@ function Home() {
                     src={heroLogo}
                     alt="Cataphract Visuals logo"
                     className="hero-title-logo"
+                    loading="eager"
+                    decoding="async"
+                    fetchPriority="high"
+                    onLoad={() => setIsHeroLogoLoaded(true)}
+                    onError={() => setIsHeroLogoLoaded(true)}
                   />
                 </h1>
               </div>
@@ -93,7 +118,7 @@ function Home() {
 
         <article className="featured-photo">
           <div className="featured-image">
-            <img
+            <HomeImage
               src={featuredPhoto}
               alt="Fishing boat with a Greek flag in a harbor"
             />
@@ -142,11 +167,11 @@ function Home() {
               to={`/gallery?category=${encodeURIComponent(theme.id)}`}
             >
               {theme.photo && (
-                <img
+                <HomeImage
                   className="theme-card-image"
                   src={theme.photo}
                   alt=""
-                  aria-hidden="true"
+                  decorative
                 />
               )}
 
@@ -186,7 +211,7 @@ function Home() {
           </div>
 
           <div className="featured-image">
-            <img
+            <HomeImage
               src={ypapantiPhoto}
               alt="Narrow balcony alley near Ypapanti in Kalamata"
             />

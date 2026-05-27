@@ -11,6 +11,32 @@
   overflow: hidden;
 }
 
+.hero-background-preload {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero-background {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transform: scale(1.018);
+  transition:
+    opacity 520ms ease,
+    transform 760ms cubic-bezier(0.2, 0.72, 0.2, 1);
+}
+
+.hero-section.is-bg-loaded .hero-background {
+  opacity: 1;
+  transform: scale(1);
+}
+
 .hero-overlay {
   position: absolute;
   inset: 0;
@@ -230,6 +256,43 @@ h3 {
   overflow: hidden;
 }
 
+.home-image-frame {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: #15130f;
+}
+
+.home-image-frame img {
+  opacity: 0;
+  transform: scale(1.018);
+  transition:
+    opacity 360ms ease,
+    transform 560ms cubic-bezier(0.2, 0.72, 0.2, 1);
+}
+
+.home-image-frame.is-loaded img {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.home-image-loader {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(90deg, transparent, rgba(243, 238, 228, 0.08), transparent),
+    rgba(243, 238, 228, 0.035);
+  background-size: 220% 100%;
+  animation: homeImageLoading 1100ms ease infinite;
+  transition: opacity 260ms ease;
+}
+
+.home-image-frame.is-loaded .home-image-loader {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .featured-image img {
   width: 100%;
   height: auto;
@@ -286,6 +349,12 @@ h3 {
   transition:
     filter 360ms ease,
     transform 520ms cubic-bezier(0.2, 0.72, 0.2, 1);
+}
+
+.theme-card-image.home-image-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .theme-card::before {
@@ -401,6 +470,12 @@ h3 {
   max-width: 860px;
 }
 
+@keyframes homeImageLoading {
+  to {
+    background-position: -220% 0;
+  }
+}
+
 @media (max-width: 900px) {
   .hero-overlay {
     background:
@@ -457,8 +532,12 @@ h3 {
 @media (prefers-reduced-motion: reduce) {
   .theme-card,
   .theme-card-image,
+  .home-image-frame img,
+  .home-image-loader,
+  .hero-background,
   .theme-card::after,
   .theme-card-content {
+    animation: none;
     transition: none;
   }
 

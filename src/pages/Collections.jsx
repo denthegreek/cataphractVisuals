@@ -1,20 +1,33 @@
 import { useEffect, useRef, useState } from "react";
 import CollectionViewer from "../components/CollectionViewer";
-import PageLoader from "../components/PageLoader";
 import { collections } from "../data/photos";
-import useImagePreloader from "../hooks/useImagePreloader";
 import "./Collections.css";
+
+function CollectionPreviewImage({ frame, priority }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  return (
+    <div className={`collection-preview-frame ${isLoaded ? "is-loaded" : ""}`}>
+      <div className="collection-preview-loader" aria-hidden="true" />
+      <img
+        src={frame.image}
+        alt=""
+        aria-hidden="true"
+        loading={priority ? "eager" : "lazy"}
+        decoding="async"
+        fetchPriority={priority ? "high" : "auto"}
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setIsLoaded(true)}
+      />
+    </div>
+  );
+}
 
 function Collections() {
   const pageRef = useRef(null);
   const [selectedCollection, setSelectedCollection] = useState(null);
   const [activeFrameIndex, setActiveFrameIndex] = useState(0);
   const [visibleItems, setVisibleItems] = useState(() => new Set());
-  const pageImages = collections
-    .slice(0, 2)
-    .map((collection) => collection.frames[0]?.image)
-    .filter(Boolean);
-  const isLoadingImages = useImagePreloader(pageImages, { maxWait: 1400 });
 
   useEffect(() => {
     if (!pageRef.current) {
@@ -93,8 +106,6 @@ function Collections() {
 
   return (
     <main className="collections-page" ref={pageRef}>
-      <PageLoader isLoading={isLoadingImages} />
-
       <section
         className={`collections-intro ${getRevealClass("intro")}`}
         data-collections-reveal="intro"
@@ -129,16 +140,11 @@ function Collections() {
           >
             <div className="collection-preview-strip">
               {collection.frames.slice(0, 3).map((frame, frameIndex) => (
-                <div key={frame.id}>
-                  <img
-                    src={frame.image}
-                    alt=""
-                    aria-hidden="true"
-                    loading={index < 2 && frameIndex === 0 ? "eager" : "lazy"}
-                    decoding="async"
-                    fetchPriority={index < 2 && frameIndex === 0 ? "high" : "auto"}
-                  />
-                </div>
+                <CollectionPreviewImage
+                  frame={frame}
+                  key={frame.id}
+                  priority={index < 2 && frameIndex === 0}
+                />
               ))}
             </div>
 
