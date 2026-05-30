@@ -3,6 +3,7 @@ import Layout from '../components/Layout.jsx'
 import About from '../pages/About.jsx'
 import Collections from '../pages/Collections.jsx'
 import Equipment from '../pages/Equipment.jsx'
+import ErrorPage from '../pages/ErrorPage.jsx'
 import Gallery from '../pages/Gallery.jsx'
 import Home from '../pages/Home.jsx'
 import PhoneShots from '../pages/PhoneShots.jsx'
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -47,6 +49,10 @@ const router = createBrowserRouter([
         element: <Rights />,
       },
     ],
+  },
+  {
+    path: '*',
+    element: <ErrorPage />,
   },
 ])
 
