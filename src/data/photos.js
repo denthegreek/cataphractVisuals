@@ -1088,6 +1088,12 @@ export const photos = [
     "camera": "Olympus OM-1",
     "film": "Kodak Gold 200 ISO",
     "location": "Diomidous Botanical Garden, Athens, Greece",
+    "poem": [
+      "The flowers danced through skies of May,",
+      "Their colors bright, then soft away.",
+      "Spring bows her head without delay,",
+      "As summer takes the world in sway."
+    ],
     "collections": []
   },
   {
